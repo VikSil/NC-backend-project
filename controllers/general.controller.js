@@ -5,8 +5,6 @@ not major enough to be broken out to a dedicated file
 
 */
 
-// gets all topics from the DB
-
 const { fetchTopics, readEndpoints } = require("../models/general.model");
 
 const getEndpoints = (request, response) => {
@@ -21,5 +19,7 @@ const getTopics = (request, response) => {
     response.status(200).send({ topics });
   });
 };
+
+
 
 module.exports = { getTopics, getEndpoints };

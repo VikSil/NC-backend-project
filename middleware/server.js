@@ -11,12 +11,14 @@ const {
   getEndpoints,
 } = require("../controllers/general.controller");
 
+const {getArticles} = require("../controllers/articles.controller");
+
 const server = express();
 server.use(express.json());
 
 server.get("/api", getEndpoints);
 server.get("/api/topics", getTopics);
-
+server.get("/api/articles", getArticles);
 
 // assume that whatever endpoint was requested does not exist,
 // since it was not processed above

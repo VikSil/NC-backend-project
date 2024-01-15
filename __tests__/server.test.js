@@ -47,7 +47,24 @@ describe("server --> nc_news_test", () =>{
             })
           });
       });
-
+      test("The response object correctly documents endpoints and responses", async() => {
+        const response = await request(server).get("/api");
+        const { endpoints } = response.body;
+        const allEndpoints = Object.keys(endpoints);
+        for (let i= 0; i<allEndpoints.length; i++){
+          const commandAndAddress = allEndpoints[i].split(" ");
+          if (commandAndAddress[0] === "GET") {
+            const endpointResponse = await request(server).get(
+              commandAndAddress[1]
+            );
+            const { body } = endpointResponse;
+            const { statusCode } = endpointResponse;
+            const expectedBody = endpoints[allEndpoints[i]].exampleResponse;
+            expect(statusCode).toBe(200);
+            expect(Object.keys(body)).toEqual(Object.keys(expectedBody));
+          }
+        }
+      }); 
     });
 
     describe("GET /api/topics", () =>{ 
