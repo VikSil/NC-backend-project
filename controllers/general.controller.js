@@ -11,8 +11,6 @@ const { fetchTopics } = require("../models/general.model");
 
 const getTopics = (request, response) => {
   fetchTopics().then((topics) => {
-    console.log(topics)
-
     response.status(200).send({ topics });
   });
 };

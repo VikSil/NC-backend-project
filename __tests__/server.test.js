@@ -13,10 +13,22 @@ beforeEach(() => {
 });
 
 describe("server --> nc_news_test", () =>{
+    describe("General error handling", () =>{ 
+        test("Returns status code 404 to request to non-existant endpoint", () => {
+            return request(server).get("/api/thisDoesNotExist").expect(404);
+        });
+        test("Returns error message to request to non-existant endpoint", () => {
+            return request(server)
+              .get("/api/thisDoesNotExist")
+              .then((result) => {
+                expect(result.error.text).toEqual("Invalid URL");
+              });
+        });
+    });
+    
     describe("GET /api/topics", () =>{ 
         test("Returns status code 200 to correct requests", () => {
             return request(server).get("/api/topics").expect(200);
-
         });
         test("Returns a json body to correct requests", () => {
         return request(server)
