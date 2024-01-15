@@ -18,5 +18,27 @@ describe("server --> nc_news_test", () =>{
             return request(server).get("/api/topics").expect(200);
 
         });
+        test("Returns a json body to correct requests", () => {
+        return request(server)
+          .get("/api/topics")
+          .expect("Content-Type", /json/)
+        });
+        test("Response body contains an array of correctly formatted objects", () => {
+            return request(server)
+              .get("/api/topics")
+              .then(({ body }) => {
+                // topics are nested in an array
+                expect(body.topics).toBeInstanceOf(Array);
+                body.topics.forEach((topic) => {
+                  // each topic is an object
+                  expect(topic).toBeInstanceOf(Object);
+                  // each topic has two and only two keys
+                  expect(Object.keys(topic)).toHaveLength(2)
+                  // each object has correct keys of correct data type
+                  expect(typeof topic.slug).toBe("string");
+                  expect(typeof topic.description).toBe("string");
+                });
+              });
+        });
     });
 });
