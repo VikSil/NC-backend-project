@@ -26,6 +26,30 @@ describe("server --> nc_news_test", () =>{
         });
     });
     
+    describe("GET /api", () =>{ 
+      test("Returns status code 200 and object with correct objects to a correct requests", () => {
+        return request(server)
+          .get("/api")
+          .expect(200)
+          .expect("Content-Type", /json/)
+          .then(({ body }) => {
+            const {endpoints} = body;
+            expect(endpoints).toBeInstanceOf(Object);
+            const allEndpoints = Object.keys(endpoints);
+            expect(allEndpoints.length).toBeGreaterThanOrEqual(1);
+            allEndpoints.forEach((endpoint)=>{
+              expect(endpoints[endpoint]).toBeInstanceOf(Object);
+              expect(Object.keys(endpoints[endpoint])).toHaveLength(4);
+              expect(typeof endpoints[endpoint].description).toBe("string");
+              expect(endpoints[endpoint].queries).toBeInstanceOf(Array);
+              expect(endpoints[endpoint].requestBody).toBeInstanceOf(Object);
+              expect(typeof endpoints[endpoint].description).toBe("string");
+            })
+          });
+      });
+
+    });
+
     describe("GET /api/topics", () =>{ 
         test("Returns status code 200 to correct requests", () => {
             return request(server).get("/api/topics").expect(200);

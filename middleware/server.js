@@ -6,15 +6,20 @@ and error handling
 */
 
 const express = require("express");
-const { getTopics} = require("../controllers/general.controller");
+const {
+  getTopics,
+  getEndpoints,
+} = require("../controllers/general.controller");
 
 const server = express();
 server.use(express.json());
 
+server.get("/api", getEndpoints);
 server.get("/api/topics", getTopics);
 
 
-// assume that all other endpoints do not exist, since not processed above
+// assume that whatever endpoint was requested does not exist,
+// since it was not processed above
 server.get('*',(request, response) => {
     response.status(404).send("Invalid URL");
 });

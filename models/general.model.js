@@ -6,6 +6,16 @@ not major enough to be broken out to a dedicated file
 */
 
 const connection = require("../db/connection");
+const fs = require("fs/promises");
+
+const readEndpoints = () =>{
+  const endpointsDoc = `${__dirname}/../endpoints.json`;
+
+  return fs.readFile(endpointsDoc, "utf-8")
+    .then((fileContent) => {
+    return JSON.parse(fileContent);
+  });
+};
 
 const fetchTopics = () => {
   return connection.query("SELECT * FROM topics").then(({rows}) => {
@@ -14,4 +24,4 @@ const fetchTopics = () => {
 };
 
 
-module.exports = { fetchTopics };
+module.exports = { fetchTopics, readEndpoints };
