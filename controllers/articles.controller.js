@@ -19,14 +19,9 @@ const getArticles = (request, response, next) => {
       });
   }
   else{
-    const { sort_by } = request.query;
-    fetchArticles(sort_by)
-      .then((articles) => {
-        response.status(200).send({ articles });
-      })
-      .catch((err) => {
-        next(err);
-      });  
+    fetchArticles().then((articles) => {
+      response.status(200).send({ articles });
+  })  
 }
 };
 

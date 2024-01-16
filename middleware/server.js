@@ -57,15 +57,6 @@ server.use((err, request, response, next) => {
 });
 
 server.use((err, request, response, next) => {
-  // Wrong query format
-  if (err.msg === "Invalid URL") {
-    response.status(400).send(err.msg);
-  } else {
-    next(err);
-  }
-});
-
-server.use((err, request, response, next) => {
   console.log(`Probably should do something more sensible with this ${err}`);
   response.status(500).send("Server failure");
 });
