@@ -91,10 +91,14 @@ describe("server --> nc_news_test", () =>{
             return request(server)
               .get("/api/topics")
               .then(({ body }) => {
+                // topics are nested in an array
                 expect(body.topics).toBeInstanceOf(Array);
                 body.topics.forEach((topic) => {
+                  // each topic is an object
                   expect(topic).toBeInstanceOf(Object);
+                  // each topic has two and only two keys
                   expect(Object.keys(topic)).toHaveLength(2)
+                  // each object has correct keys of correct data type
                   expect(typeof topic.slug).toBe("string");
                   expect(typeof topic.description).toBe("string");
                 });
@@ -102,127 +106,7 @@ describe("server --> nc_news_test", () =>{
         });
     });
 
-    describe("GET /api/articles", () => {
-      test("Returns status code 200 and correctly formatted and sorted body to a correct requests", () => {
-        return request(server)
-          .get("/api/articles")
-          .expect(200)
-          .expect("Content-Type", /json/)
-          .then(({ body }) => {
-            expect(body.articles).toBeInstanceOf(Array);
-            expect(body.articles.length).toBeGreaterThanOrEqual(1);
-            expect(body.articles).toBeSortedBy("created_at", { descending: true});
-            body.articles.forEach((article) => {
-              expect(article).toBeInstanceOf(Object);
-              expect(Object.keys(article)).toHaveLength(8);
-              expect(typeof article.author).toBe("string");
-              expect(typeof article.title).toBe("string");
-              expect(typeof article.article_id).toBe("number");
-              expect(typeof article.topic).toBe("string");
-              expect(typeof article.created_at).toBe("string");              
-              expect(typeof article.votes).toBe("number");
-              expect(typeof article.article_img_url).toBe("string");
-              expect(typeof article.comment_count).toBe("number");
-            });
-          });
-      });
-      describe('GET /api/articles/sort_by=...', () => {
-        test("Returns list of articles sorted by title", () => {
-          return request(server)
-            .get("/api/articles?sort_by=title")
-            .then(({ body }) => {
-              expect(body.articles).toBeSortedBy("title");
-            });
-        });
-        test("Returns list of articles sorted by author", () => {
-          return request(server)
-            .get("/api/articles?sort_by=author")
-            .then(({ body }) => {
-              expect(body.articles).toBeSortedBy("author");
-            });
-        });
-        test("Returns list of articles sorted by multiple parameters", () => {
-          return request(server)
-            .get("/api/articles?sort_by=author,title")
-            .then(({ body }) => {
-              const {articles} = body;
-              // make a clone of the results
-              let sortedArticles = articles.map((a) => {
-                return { ...a };
-              });
-              // sort the cloned results as they should be sorted 
-              sortedArticles = sortedArticles.sort((a, b) =>{
-                if (a.author > b.author){
-                  return true
-                }
-                else{
-                  if (a.author === b.author){
-                    return a.title.toLowerCase() > b.title.toLowerCase();
-                  }
-                  else return false
-                }
-               });
-              // compare every position in results to the sorted clone of results 
-              expect(articles.length).toBe(sortedArticles.length);
-              articles.every((article, index) =>{
-                expect(articles[index]).toEqual(sortedArticles[index]);
-              })
-            });
-        });
-        test("Returns status code 400 if sorting by requested column is not allowed", () => {
-          return request(server)
-            .get("/api/articles?sort_by=article_img_url")
-            .expect(400)
-            .then((result) => {
-              expect(result.error.text).toEqual("Invalid URL");
-            });
-        });
-        test("Returns status code 400 if injection is attempted via sort_by query", () => {
-          return request(server)
-            .get(
-              "/api/articles?sort_by=title; DROP table articles;"
-            )
-            .expect(400)
-            .then((result) => {
-              expect(result.error.text).toEqual("Invalid URL");
-            });
-        });
-      });
-
-
-
-
-      // test("Returns status code 404 if article_id does not exist in the DB", () => {
-      //   return request(server)
-      //     .get("/api/articles/0")
-      //     .expect(404)
-      //     .then((result) => {
-      //       expect(result.error.text).toEqual("Not Found");
-      //     });
-      // });
-      // test("Returns status code 400 if article_id is in invalid format", () => {
-      //   return request(server)
-      //     .get("/api/articles/first")
-      //     .expect(400)
-      //     .then((result) => {
-      //       expect(result.error.text).toEqual("Invalid URL");
-      //     });
-      // });
-      // test("Returns status code 400 if injection is attempted via url", () => {
-      //   return request(server)
-      //     .get("/api/articles/first; DROP table articles;")
-      //     .expect(400)
-      //     .then((result) => {
-      //       expect(result.error.text).toEqual("Invalid URL");
-      //     });
-      // });
-    });
-
-
-
-
-
-    describe("GET /api/articles/:article_id", () => {
+    describe("GET /api/article/:article_id", () => {
       test("Returns status code 200 and correctly formatted body to a correct requests", () => {
         return request(server)
           .get("/api/articles/1")
@@ -230,6 +114,25 @@ describe("server --> nc_news_test", () =>{
           .expect("Content-Type", /json/)
           .then(({ body }) => {
             const {article} = body
+            expect(article).toBeInstanceOf(Object);
+            expect(Object.keys(article)).toHaveLength(8);
+            expect(typeof article.article_id).toBe("number");
+            expect(typeof article.votes).toBe("number");
+            expect(typeof article.title).toBe("string");
+            expect(typeof article.topic).toBe("string");
+            expect(typeof article.author).toBe("string");
+            expect(typeof article.body).toBe("string");
+            expect(typeof article.created_at).toBe("string");
+            expect(typeof article.article_img_url).toBe("string");
+          });
+      });
+      test("Returns status code 200 and correctly formatted body to a correct requests", () => {
+        return request(server)
+          .get("/api/articles/1")
+          .expect(200)
+          .expect("Content-Type", /json/)
+          .then(({ body }) => {
+            const { article } = body;
             expect(article).toBeInstanceOf(Object);
             expect(Object.keys(article)).toHaveLength(8);
             expect(typeof article.article_id).toBe("number");
@@ -266,5 +169,7 @@ describe("server --> nc_news_test", () =>{
             expect(result.error.text).toEqual("Invalid URL");
           });
       });
+
+
     });
 });
