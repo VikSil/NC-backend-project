@@ -188,39 +188,7 @@ describe("server --> nc_news_test", () =>{
             });
         });
       });
-
-
-
-
-      // test("Returns status code 404 if article_id does not exist in the DB", () => {
-      //   return request(server)
-      //     .get("/api/articles/0")
-      //     .expect(404)
-      //     .then((result) => {
-      //       expect(result.error.text).toEqual("Not Found");
-      //     });
-      // });
-      // test("Returns status code 400 if article_id is in invalid format", () => {
-      //   return request(server)
-      //     .get("/api/articles/first")
-      //     .expect(400)
-      //     .then((result) => {
-      //       expect(result.error.text).toEqual("Invalid URL");
-      //     });
-      // });
-      // test("Returns status code 400 if injection is attempted via url", () => {
-      //   return request(server)
-      //     .get("/api/articles/first; DROP table articles;")
-      //     .expect(400)
-      //     .then((result) => {
-      //       expect(result.error.text).toEqual("Invalid URL");
-      //     });
-      // });
     });
-
-
-
-
 
     describe("GET /api/articles/:article_id", () => {
       test("Returns status code 200 and correctly formatted body to a correct requests", () => {
