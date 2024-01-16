@@ -5,12 +5,25 @@ pertaining to manipulating articles
 
 */
 
-const { fetchArticles } = require("../models/articles.model");
+const { fetchArticles, fetchArticleById } = require("../models/articles.model");
 
-const getArticles = (request, response) => {
-  fetchArticles().then((articles) => {
-    response.status(200).send({ articles });
-  });
+const getArticles = (request, response, next) => {
+  const { article_id } = request.params;
+  if (article_id){
+    fetchArticleById(article_id)
+      .then((article) => {
+        response.status(200).send({ article });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
+  else{
+    fetchArticles().then((articles) => {
+      response.status(200).send({ articles });
+  })  
+}
 };
 
 module.exports = { getArticles };
+

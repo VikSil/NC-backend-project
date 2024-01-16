@@ -19,6 +19,7 @@ server.use(express.json());
 server.get("/api", getEndpoints);
 server.get("/api/topics", getTopics);
 server.get("/api/articles", getArticles);
+server.get("/api/articles/:article_id", getArticles);
 
 // assume that whatever endpoint was requested does not exist,
 // since it was not processed above
@@ -27,21 +28,20 @@ server.get('*',(request, response) => {
 });
 
 
-
-// Error handling, to be adjusted later
+//Error handling
 server.use((err, request, response, next) => {
   // Postgres Err: null value in input violates non-null constraint
   if (err.code === "23502") {
-    response.status(400).send({ msg: "Bad request" });
+    response.status(400).send("Invalid inputs");
   } else {
     next(err);
   }
 });
 
-// Postgres Err: invalid input syntax for integer
 server.use((err, request, response, next) => {
+  // Postgres Err: invalid input syntax for integer
   if (err.code === "22P02") {
-    response.status(400).send({ msg: "Bad request" });
+    response.status(400).send("Invalid URL");
   } else {
     next(err);
   }
@@ -49,10 +49,8 @@ server.use((err, request, response, next) => {
 
 server.use((err, request, response, next) => {
   // No record in the DB
-  if (err.message === "Not Found") {
-
-      response.status(404).send({ msg: "the thing you are looking for does not exist" });
-
+  if (err.msg === "Not Found") {
+      response.status(404).send(err.msg);
   } else {
     next(err);
   }
