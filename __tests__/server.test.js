@@ -54,9 +54,20 @@ describe("server --> nc_news_test", () =>{
         for (let i= 0; i<allEndpoints.length; i++){
           const commandAndAddress = allEndpoints[i].split(" ");
           if (commandAndAddress[0] === "GET") {
-            const endpointResponse = await request(server).get(
-              commandAndAddress[1]
-            );
+            //this will be reassigned depending on url
+            let endpointResponse = null;
+            const addressAndParams = commandAndAddress[1].split(":");
+            if (addressAndParams.length === 1) {// if url has no parameters
+              endpointResponse = await request(server).get(
+                commandAndAddress[1]
+              );
+            } else {
+              // if url has parameters
+              if (addressAndParams[1].includes("id")) {// if parameter is id
+                const address = addressAndParams[0] + "1"; // pick the first object by id
+                endpointResponse = await request(server).get(address);
+              }
+            }
             const { body } = endpointResponse;
             const { statusCode } = endpointResponse;
             const expectedBody = endpoints[allEndpoints[i]].exampleResponse;
@@ -93,5 +104,72 @@ describe("server --> nc_news_test", () =>{
                 });
               });
         });
+    });
+
+    describe("GET /api/article/:article_id", () => {
+      test("Returns status code 200 and correctly formatted body to a correct requests", () => {
+        return request(server)
+          .get("/api/articles/1")
+          .expect(200)
+          .expect("Content-Type", /json/)
+          .then(({ body }) => {
+            const {article} = body
+            expect(article).toBeInstanceOf(Object);
+            expect(Object.keys(article)).toHaveLength(8);
+            expect(typeof article.article_id).toBe("number");
+            expect(typeof article.votes).toBe("number");
+            expect(typeof article.title).toBe("string");
+            expect(typeof article.topic).toBe("string");
+            expect(typeof article.author).toBe("string");
+            expect(typeof article.body).toBe("string");
+            expect(typeof article.created_at).toBe("string");
+            expect(typeof article.article_img_url).toBe("string");
+          });
+      });
+      test("Returns status code 200 and correctly formatted body to a correct requests", () => {
+        return request(server)
+          .get("/api/articles/1")
+          .expect(200)
+          .expect("Content-Type", /json/)
+          .then(({ body }) => {
+            const { article } = body;
+            expect(article).toBeInstanceOf(Object);
+            expect(Object.keys(article)).toHaveLength(8);
+            expect(typeof article.article_id).toBe("number");
+            expect(typeof article.votes).toBe("number");
+            expect(typeof article.title).toBe("string");
+            expect(typeof article.topic).toBe("string");
+            expect(typeof article.author).toBe("string");
+            expect(typeof article.body).toBe("string");
+            expect(typeof article.created_at).toBe("string");
+            expect(typeof article.article_img_url).toBe("string");
+          });
+      });
+      test("Returns status code 404 if article_id does not exist in the DB", () => {
+        return request(server)
+          .get("/api/articles/0")
+          .expect(404)
+          .then((result) => {
+            expect(result.error.text).toEqual("Not Found");
+          });
+      });
+      test("Returns status code 400 if article_id is in invalid format", () => {
+        return request(server)
+          .get("/api/articles/first")
+          .expect(400)
+          .then((result) => {
+            expect(result.error.text).toEqual("Invalid URL");
+          });
+      });
+      test("Returns status code 400 if injection is attempted via url", () => {
+        return request(server)
+          .get("/api/articles/first; DROP table articles;")
+          .expect(400)
+          .then((result) => {
+            expect(result.error.text).toEqual("Invalid URL");
+          });
+      });
+
+
     });
 });
