@@ -243,7 +243,7 @@ describe("server --> nc_news_test", () =>{
     });
 
     describe("GET /api/articles/:article_id/comments", () => {
-      test("Returns status code 200 and correctly formatted and sorted body to a correct requests", () => {
+      test("Returns status code 200 and correctly formatted and sorted body to a correct request", () => {
         const expectedObject = {
           comment_id: expect.any(Number),
           article_id: expect.any(Number),
@@ -309,7 +309,35 @@ describe("server --> nc_news_test", () =>{
             expect(result.error.text).toEqual("Invalid URL");
           });
       });
-
     }); 
 
+    describe("POST /api/articles/:article_id/comments", () => {
+      test("Returns status code: 201 and correctly formatted body to a correct request", () => {
+        return request(server)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "icellusedkars",
+            body: "This is a test comment",
+          })
+          .expect(201)
+          .then((response) => {
+            const { comment } = response.body;
+            expect(comment).toBeInstanceOf(Object);
+            const expectedObject = {
+              comment_id: expect.any(Number),
+              created_at: expect.stringMatching(
+                /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\w$/
+              ),
+            };
+
+            expect(Object.keys(comment)).toHaveLength(6);
+            expect(comment).toMatchObject(expectedObject);
+            expect(comment.comment_id).toBeGreaterThan(0);
+            expect(comment.article_id).toBe(2);
+            expect(comment.votes).toBe(0);
+            expect(comment.body).toBe("This is a test comment");
+            expect(comment.author).toBe("icellusedkars");
+          });
+      });
+    });
 });

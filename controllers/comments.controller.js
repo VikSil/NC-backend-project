@@ -5,7 +5,7 @@ pertaining to manipulating comments
 
 */
 
-const { fetchComments } = require("../models/comments.model");
+const { fetchComments, insertComments } = require("../models/comments.model");
 const { fetchArticleById } = require("../models/articles.model");
 
 const getComments = (request, response, next) => {
@@ -24,4 +24,19 @@ const getComments = (request, response, next) => {
   }
 };
 
-module.exports = { getComments };
+const postComments = (request, response) =>{
+  const { article_id } = request.params;
+  const {body} = request
+  if (article_id) {
+
+  insertComment(article_id, body)
+    .then((comment) => {
+      response.status(201).send({ comment });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+}
+
+module.exports = { getComments, postComments };
