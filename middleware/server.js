@@ -18,7 +18,7 @@ const {
 } = require("../controllers/comments.controller");
 
 const server = express();
-server.use(express.json());
+server.use(express.json());// this will handle body for POST requests
 
 server.get("/api", getEndpoints);
 server.get("/api/topics", getTopics);
