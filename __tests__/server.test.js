@@ -53,10 +53,17 @@ describe("server --> nc_news_test", () =>{
         const allEndpoints = Object.keys(endpoints);
         for (let i= 0; i<allEndpoints.length; i++){
           const commandAndAddress = allEndpoints[i].split(" ");
+          const addressAndParams = commandAndAddress[1].split(":");
+          let remainder = "";
+          if (addressAndParams[1]){
+            if (addressAndParams[1].split("/").length>1){
+              remainder = "/"+addressAndParams[1].split("/")[1];
+            }
+          }          
           if (commandAndAddress[0] === "GET") {
             //this will be reassigned depending on url
             let endpointResponse = null;
-            const addressAndParams = commandAndAddress[1].split(":");
+            
             if (addressAndParams.length === 1) {// if url has no parameters
               endpointResponse = await request(server).get(
                 commandAndAddress[1]
@@ -64,7 +71,7 @@ describe("server --> nc_news_test", () =>{
             } else {
               // if url has parameters
               if (addressAndParams[1].includes("id")) {// if parameter is id
-                const address = addressAndParams[0] + "1"; // pick the first object by id
+                const address = addressAndParams[0] + "1" + remainder; // pick the first object by id
                 endpointResponse = await request(server).get(address);
               }
             }
@@ -227,13 +234,82 @@ describe("server --> nc_news_test", () =>{
       });
       test("Returns status code 400 if injection is attempted via url", () => {
         return request(server)
-          .get("/api/articles/first; DROP table articles;")
+          .get("/api/articles/1; DROP table articles;")
+          .expect(400)
+          .then((result) => {
+            expect(result.error.text).toEqual("Invalid URL");
+          });
+      });
+    });
+
+    describe("GET /api/articles/:article_id/comments", () => {
+      test("Returns status code 200 and correctly formatted and sorted body to a correct requests", () => {
+        const expectedObject = {
+          comment_id: expect.any(Number),
+          article_id: expect.any(Number),
+          votes: expect.any(Number),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.stringMatching(
+            /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\w$/
+          ),
+          };
+
+        return request(server)
+          .get("/api/articles/1/comments")
+          .expect(200)
+          .expect("Content-Type", /json/)
+          .then(({ body }) => {
+            expect(body.comments).toBeInstanceOf(Array);
+            expect(body.comments.length).toBe(11);
+            expect(body.comments).toBeSortedBy("created_at", {
+              descending: true,
+            });
+            body.comments.forEach((comment) => {
+              expect(Object.keys(comment)).toHaveLength(6);
+              expect(comment).toMatchObject(expectedObject);
+              expect(comment.comment_id).toBeGreaterThan(0);
+              expect(comment.article_id).toBeGreaterThan(0);
+            });
+          });
+      });
+      test("Returns status code 200 and an empty array to request for article without any comments", () => {
+        return request(server)
+          .get("/api/articles/2/comments")
+          .expect(200)
+          .expect("Content-Type", /json/)
+          .then(({ body }) => {
+            expect(body.comments).toBeInstanceOf(Array);
+            expect(body.comments.length).toBe(0);
+          });
+      });
+
+      test("Returns status code 404 if article does not exist", () => {
+        return request(server)
+          .get("/api/articles/0/comments")
+          .expect(404)
+          .then((result) => {
+            expect(result.error.text).toEqual("Not Found");
+          });
+      });
+
+      test("Returns status code 400 if article_id is in invalid format", () => {
+        return request(server)
+          .get("/api/articles/first/comments")
+          .expect(400)
+          .then((result) => {
+            expect(result.error.text).toEqual("Invalid URL");
+          });
+      });
+      test("Returns status code 400 if injection is attempted via url", () => {
+        return request(server)
+          .get("/api/articles/1; DROP table articles;/comments")
           .expect(400)
           .then((result) => {
             expect(result.error.text).toEqual("Invalid URL");
           });
       });
 
+    }); 
 
-    });
 });
