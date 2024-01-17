@@ -18,7 +18,7 @@ const fetchComments = (article_id) => {
     )
     .then(({ rows }) => {
       return rows;
-    });
+    })
 };
 
 insertComment = (article_id, body) => {

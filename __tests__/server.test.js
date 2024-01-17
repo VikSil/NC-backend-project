@@ -55,15 +55,13 @@ describe("server --> nc_news_test", () =>{
           const commandAndAddress = allEndpoints[i].split(" ");
           const addressAndParams = commandAndAddress[1].split(":");
           let remainder = "";
+          let endpointResponse = null;
           if (addressAndParams[1]){
             if (addressAndParams[1].split("/").length>1){
               remainder = "/"+addressAndParams[1].split("/")[1];
             }
           }          
           if (commandAndAddress[0] === "GET") {
-            //this will be reassigned depending on url
-            let endpointResponse = null;
-            
             if (addressAndParams.length === 1) {// if url has no parameters
               endpointResponse = await request(server).get(
                 commandAndAddress[1]
@@ -75,12 +73,26 @@ describe("server --> nc_news_test", () =>{
                 endpointResponse = await request(server).get(address);
               }
             }
-            const { body } = endpointResponse;
             const { statusCode } = endpointResponse;
-            const expectedBody = endpoints[allEndpoints[i]].exampleResponse;
             expect(statusCode).toBe(200);
-            expect(Object.keys(body)).toEqual(Object.keys(expectedBody));
           }
+          if (commandAndAddress[0] === "POST") {
+            const { requestBody } = endpoints[allEndpoints[i]];
+            if (addressAndParams.length === 2) {// if url has a parameter
+              if (addressAndParams[1].includes("id")) {// if parameter is id
+                const address = addressAndParams[0] + "1" + remainder; // pick the first object by id
+                endpointResponse = await request(server)
+                  .post(address)
+                  .send(requestBody);
+                const { statusCode } = endpointResponse;
+                expect(statusCode).toBe(201);
+
+              }
+            }
+          }
+          const { body } = endpointResponse;
+          const expectedBody = endpoints[allEndpoints[i]].exampleResponse;
+          expect(Object.keys(body)).toEqual(Object.keys(expectedBody));
         }
       }); 
     });
@@ -329,7 +341,7 @@ describe("server --> nc_news_test", () =>{
                 /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\w$/
               ),
             };
-
+            console.log(comment);
             expect(Object.keys(comment)).toHaveLength(6);
             expect(comment).toMatchObject(expectedObject);
             expect(comment.comment_id).toBeGreaterThan(0);
@@ -339,5 +351,77 @@ describe("server --> nc_news_test", () =>{
             expect(comment.author).toBe("icellusedkars");
           });
       });
+
+      test("Returns status code 404 if user does not exist", () => {
+        return request(server)
+          .post("/api/articles/1/comments")
+          .send({
+            username: "someoneShady",
+            body: "This is a test comment",
+          })
+          .expect(404)
+          .then((result) => {
+            expect(result.error.text).toEqual("Not Found");
+          });
+      });
+      test("Returns status code 404 if article does not exist", () => {
+        return request(server)
+          .post("/api/articles/0/comments")
+          .send({
+            username: "icellusedkars",
+            body: "This is a test comment",
+          })
+          .expect(404)
+          .then((result) => {
+            expect(result.error.text).toEqual("Not Found");
+          });
+      });
+      test("Returns status code 400 if article_id is in invalid format", () => {
+        return request(server)
+          .post("/api/articles/first/comments")
+          .send({
+            username: "icellusedkars",
+            body: "This is a test comment",
+          })
+          .expect(400)
+          .then((result) => {
+            expect(result.error.text).toEqual("Invalid URL");
+          });
+      });
+      test("Returns status code 400 if injection is attempted via url", () => {
+        return request(server)
+          .post("/api/articles/1; DROP table articles;/comments")
+          .send({
+            username: "icellusedkars",
+            body: "This is a test comment",
+          })
+          .expect(400)
+          .then((result) => {
+            expect(result.error.text).toEqual("Invalid URL");
+          });
+      });
+      test("Parametrises inputs to INSERT query", () => {
+        return request(server)
+          .post("/api/articles/1/comments")
+          .send({
+            username: "icellusedkars",
+            body: "('Smthn','icellusedkars',1); DROP TABLE comments;",
+          })
+          .expect(201)
+          .then((response) => {
+            const { comment } = response.body;
+            expect(comment).toMatchObject({
+              comment_id: expect.any(Number),
+              created_at: expect.stringMatching(
+                /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\w$/
+              ),
+              body: "('Smthn','icellusedkars',1); DROP TABLE comments;",
+              article_id: 1,
+              votes: 0,
+              author: "icellusedkars",
+            });
+          });
+      });
+
     });
 });
