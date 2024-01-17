@@ -23,5 +23,25 @@ const fetchTopics = () => {
   });
 };
 
+const fetchUserByName = (username) => {
+  return connection
+    .query(
+      `
+  SELECT * FROM users 
+  WHERE username = $1`,
+      [username]
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: "Not Found",
+        });
+      } else {
+        return rows[0];
+      }
+    });
+}
 
-module.exports = { fetchTopics, readEndpoints };
+
+module.exports = { fetchTopics, readEndpoints, fetchUserByName };
