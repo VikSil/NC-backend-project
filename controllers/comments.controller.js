@@ -5,7 +5,11 @@ pertaining to manipulating comments
 
 */
 
-const { fetchComments, insertComment } = require("../models/comments.model");
+const {
+  fetchComments,
+  insertComment,
+  dropCommentById,
+} = require("../models/comments.model");
 const { fetchArticleById } = require("../models/articles.model");
 
 const getComments = (request, response, next) => {
@@ -37,4 +41,15 @@ const postComments = (request, response, next) =>{
     }
 }
 
-module.exports = { getComments, postComments };
+const deleteCommentById = (request, response, next) =>{
+    const { comment_id } = request.params;
+    dropCommentById(Number(comment_id))
+      .then(() => {
+        response.status(204).send();
+      })
+      .catch((err) => {
+        next(err);
+      });
+}
+
+module.exports = { getComments, postComments, deleteCommentById };

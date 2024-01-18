@@ -36,4 +36,25 @@ insertComment = (article_id, body) => {
     });
 };
 
-module.exports = { fetchComments, insertComment };
+dropCommentById = (comments) => {
+  return connection
+    .query(
+      `
+        DELETE FROM comments
+        WHERE comment_id = $1
+        RETURNING *`,
+      [comments]
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: "Not Found",
+        });
+      } else {
+        return rows[0];
+      }
+    });
+};
+
+module.exports = { fetchComments, insertComment, dropCommentById };
