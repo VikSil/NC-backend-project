@@ -367,7 +367,6 @@ describe("server --> nc_news_test", () =>{
                  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\w$/
                ),
              };
-             console.log(comment);
              expect(Object.keys(comment)).toHaveLength(6);
              expect(comment).toMatchObject(expectedObject);
              expect(comment.comment_id).toBeGreaterThan(0);
@@ -414,6 +413,36 @@ describe("server --> nc_news_test", () =>{
              expect(result.error.text).toEqual("Invalid request");
            });
        });
+        test("Returns status code 400 if user is not submitted", () => {
+          return request(server)
+            .post("/api/articles/1/comments")
+            .send({
+              body: "This is a test comment",
+            })
+            .expect(400)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid inputs");
+            });
+        });
+        test("Returns status code 400 if comment body is not submitted", () => {
+          return request(server)
+            .post("/api/articles/1/comments")
+            .send({
+              username: "icellusedkars",
+            })
+            .expect(400)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid inputs");
+            });
+        });
+        test("Returns status code 400 if endpoint is invoked without post body", () => {
+          return request(server)
+            .post("/api/articles/1/comments")
+            .expect(400)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid inputs");
+            });
+        });
        test("Returns status code 400 if injection is attempted via url", () => {
          return request(server)
            .post("/api/articles/1; DROP table articles;/comments")

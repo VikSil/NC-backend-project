@@ -60,9 +60,10 @@ server.use((err, request, response, next) => {
 });
 
 server.use((err, request, response, next) => {
+  // Postgres Err 23503 - FK value not present in parent table
   // No record in the DB
-  if (err.msg === "Not Found") {
-      response.status(404).send(err.msg);
+  if (err.code === "23503" || err.msg === "Not Found") {
+    response.status(404).send("Not Found");
   } else {
     next(err);
   }
