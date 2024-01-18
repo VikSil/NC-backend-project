@@ -7,7 +7,8 @@ pertaining to articles data
 
 const connection = require("../db/connection");
 
-const fetchArticles = (sort_by = "date") => {
+
+const fetchArticles = (sort_by = "date", topic) => {
   const validSortCols = ["date", "created_at", "title", "author"];
   const sortByArray = sort_by.split(",");
 
@@ -22,21 +23,27 @@ const fetchArticles = (sort_by = "date") => {
   if (sort_by === "date") {
     sort_by = "created_at DESC";
   }
-  return connection
-    .query(
-      `
+
+  let whereClause = "  "
+  if (topic){
+    whereClause  = ` WHERE a.topic = '${topic}' `
+  }
+
+  const queryString =
+    `
     SELECT a.author, a.title, a.article_id, a.topic,
            a.created_at, a.votes, a.article_img_url,
            count(c.comment_id)::int as comment_count
      FROM articles as a
      LEFT JOIN comments as c 
-     ON a.article_id = c.article_id
-     GROUP BY a.article_id
-     ORDER BY a.${sort_by}`
-    )
-    .then(({ rows }) => {
-      return rows;
-    });
+     ON a.article_id = c.article_id` +
+     whereClause +
+    `GROUP BY a.article_id
+     ORDER BY a.${sort_by}`;
+
+  return connection.query(queryString).then(({ rows }) => {
+    return rows;
+  });
 };
 
 

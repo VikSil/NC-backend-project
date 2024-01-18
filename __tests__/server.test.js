@@ -252,6 +252,43 @@ describe("server --> nc_news_test", () =>{
             });
         });
       });
+      describe("GET /api/articles/topic=...", () => {
+        test("Returns list of articles filtered by topic", () => {
+          return request(server)
+            .get("/api/articles?topic=mitch")
+            .then(({ body }) => {
+              expect(body.articles.length).toBe(12)
+              body.articles.forEach((article) => {
+                expect(article.topic).toBe("mitch");
+              });
+            });
+        });
+        test("Returns empty list when no articles are assciated with a topic that exists", () => {
+          return request(server)
+            .get("/api/articles?topic=paper")
+            .then(({ body }) => {
+              expect(body.articles.length).toBe(0);
+            });
+        });
+        test("Returns status code 404 if topic does not exist", () => {
+          return request(server)
+            .get("/api/articles?topic=mary")
+            .expect(404)
+            .then((result) => {
+              expect(result.error.text).toEqual("Not Found");
+            });
+        });
+        test("Returns status code 404 if injection is attempted via sort_by query", () => {
+          return request(server)
+            .get("//api/articles?topic=mitch; DROP TABLE comments;")
+            .expect(404)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid URL");
+            });
+        });
+      });
+
+      
     });
 
 

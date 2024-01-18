@@ -29,5 +29,20 @@ const fetchTopics = () => {
   });
 };
 
+const fetchTopicBySlug = (slug) =>{
+  return connection
+    .query(`SELECT * FROM topics WHERE slug = $1`, [slug])
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: "Not Found",
+        });
+      } else {
+        return rows[0];
+      }
+    });
+}
 
-module.exports = { fetchTopics, readEndpoints, fetchUsers };
+
+module.exports = { fetchTopics, readEndpoints, fetchUsers, fetchTopicBySlug };
