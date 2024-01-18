@@ -39,16 +39,10 @@ const patchVotes = (request, response, next) => {
   const { body } = request;
   if (article_id) {
     fetchArticleById(article_id)
+      .then((article) => updateVotes(article_id, body))
       .then((article) => {
-        updateVotes(article_id, body)
-          .then((article) => {
             response.status(200).send({ article });
-          })
-          .catch((err) => {
-            console.log(err);
-            next(err);
-          });
-      })
+          })          
       .catch((err) => {
         next(err);
       });

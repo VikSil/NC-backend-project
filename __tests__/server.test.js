@@ -42,7 +42,7 @@ describe("server --> nc_news_test", () =>{
             const { endpoints } = body;
             expect(endpoints).toBeInstanceOf(Object);
             const allEndpoints = Object.keys(endpoints);
-            expect(allEndpoints.length).toBe(6);
+            expect(allEndpoints.length).toBe(7);
             allEndpoints.forEach((endpoint) => {
               expect(endpoints[endpoint]).toBeInstanceOf(Object);
               expect(Object.keys(endpoints[endpoint])).toHaveLength(4);
@@ -93,6 +93,21 @@ describe("server --> nc_news_test", () =>{
               }
             }
           }
+
+          if (commandAndAddress[0] === "PATCH") {
+            const { requestBody } = endpoints[allEndpoints[i]];
+            if (addressAndParams.length === 2) {// if url has a parameter
+              if (addressAndParams[1].includes("id")) {// if parameter is id
+                const address = addressAndParams[0] + "1" + remainder; // pick the first object by id
+                endpointResponse = await request(server)
+                  .patch(address)
+                  .send(requestBody);
+                const { statusCode } = endpointResponse;
+                expect(statusCode).toBe(200);
+              }
+            }
+          }
+
           const { body } = endpointResponse;
           const expectedBody = endpoints[allEndpoints[i]].exampleResponse;
           expect(Object.keys(body)).toEqual(Object.keys(expectedBody));
@@ -366,7 +381,6 @@ describe("server --> nc_news_test", () =>{
             .send({ inc_votes: 15 })
             .then(({ body }) => {
               const { article } = body;
-              console.log(article);
               expect(article.votes).toBe(115);
             });
         });
@@ -376,7 +390,6 @@ describe("server --> nc_news_test", () =>{
             .send({ inc_votes: -15 })
             .then(({ body }) => {
               const { article } = body;
-              console.log(article);
               expect(article.votes).toBe(85);
             });
         });
@@ -414,6 +427,32 @@ describe("server --> nc_news_test", () =>{
             .expect(400)
             .then((result) => {
               expect(result.error.text).toEqual("Invalid request");
+            });
+        });
+        test("Returns status code 400 if votes count is undefined", () => {
+          return request(server)
+            .patch("/api/articles/1")
+            .send({ inc_votes: "seven" })
+            .expect(400)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid request");
+            });
+        });
+        test("Returns status code 400 if inc_votes property is missing", () => {
+          return request(server)
+            .patch("/api/articles/1")
+            .send({ })
+            .expect(400)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid inputs");
+            });
+        });
+        test("Returns status code 400 if body is missing", () => {
+          return request(server)
+            .patch("/api/articles/1")
+            .expect(400)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid inputs");
             });
         });
         test("Returns status code 400 if injection is attempted via patch body", () => {
