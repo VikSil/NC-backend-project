@@ -1,5 +1,5 @@
 const server = require("./server");
-const port = 8080;
+const { PORT = 9090 } = process.env;
 
 server.listen(port, (err) => {
   if (err) {
