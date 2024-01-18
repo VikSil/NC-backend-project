@@ -17,7 +17,7 @@ const fetchComments = (article_id) => {
       [article_id]
     )
     .then(({ rows }) => {
-      return rows;
+        return rows;
     })
 };
 
