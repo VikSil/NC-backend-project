@@ -5,7 +5,11 @@ pertaining to manipulating articles
 
 */
 
-const { fetchArticles, fetchArticleById } = require("../models/articles.model");
+const {
+  fetchArticles,
+  fetchArticleById,
+  updateVotes,
+} = require("../models/articles.model");
 
 const getArticles = (request, response, next) => {
   const { article_id } = request.params;
@@ -30,5 +34,20 @@ const getArticles = (request, response, next) => {
 }
 };
 
-module.exports = { getArticles };
+const patchVotes = (request, response, next) => {
+  const { article_id } = request.params;
+  const { body } = request;
+  if (article_id) {
+    fetchArticleById(article_id)
+      .then((article) => updateVotes(article_id, body))
+      .then((article) => {
+            response.status(200).send({ article });
+          })          
+      .catch((err) => {
+        next(err);
+      });
+  }
+};
+
+module.exports = { getArticles, patchVotes };
 

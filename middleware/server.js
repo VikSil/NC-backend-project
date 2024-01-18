@@ -11,7 +11,10 @@ const {
   getEndpoints,
 } = require("../controllers/general.controller");
 
-const {getArticles} = require("../controllers/articles.controller");
+const {
+  getArticles,
+  patchVotes,
+} = require("../controllers/articles.controller");
 const {
   getComments,
   postComments,
@@ -27,6 +30,8 @@ server.get("/api/articles/:article_id", getArticles);
 server.get("/api/articles/:article_id/comments", getComments);
 
 server.post("/api/articles/:article_id/comments", postComments);
+
+server.patch("/api/articles/:article_id", patchVotes);
 
 // assume that whatever endpoint was requested does not exist,
 // since it was not processed above
@@ -48,7 +53,7 @@ server.use((err, request, response, next) => {
 server.use((err, request, response, next) => {
   // Postgres Err: invalid input syntax for integer
   if (err.code === "22P02") {
-    response.status(400).send("Invalid URL");
+    response.status(400).send("Invalid request");
   } else {
     next(err);
   }
