@@ -17,6 +17,12 @@ const readEndpoints = () =>{
   });
 };
 
+const fetchUsers = () => {
+  return connection.query("SELECT * FROM users").then(({ rows }) => {
+    return rows;
+  });
+};
+
 const fetchTopics = () => {
   return connection.query("SELECT * FROM topics").then(({rows}) => {
     return rows;
@@ -24,4 +30,4 @@ const fetchTopics = () => {
 };
 
 
-module.exports = { fetchTopics, readEndpoints };
+module.exports = { fetchTopics, readEndpoints, fetchUsers };
