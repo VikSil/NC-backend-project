@@ -349,6 +349,107 @@ describe("server --> nc_news_test", () =>{
       });
     });
     
+     describe("POST /api/articles/:article_id/comments", () => {
+       test("Returns status code: 201 and correctly formatted body to a correct request", () => {
+         return request(server)
+           .post("/api/articles/2/comments")
+           .send({
+             username: "icellusedkars",
+             body: "This is a test comment",
+           })
+           .expect(201)
+           .then((response) => {
+             const { comment } = response.body;
+             expect(comment).toBeInstanceOf(Object);
+             const expectedObject = {
+               comment_id: expect.any(Number),
+               created_at: expect.stringMatching(
+                 /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\w$/
+               ),
+             };
+             console.log(comment);
+             expect(Object.keys(comment)).toHaveLength(6);
+             expect(comment).toMatchObject(expectedObject);
+             expect(comment.comment_id).toBeGreaterThan(0);
+             expect(comment.article_id).toBe(2);
+             expect(comment.votes).toBe(0);
+             expect(comment.body).toBe("This is a test comment");
+             expect(comment.author).toBe("icellusedkars");
+           });
+       });
+
+       test("Returns status code 404 if user does not exist", () => {
+         return request(server)
+           .post("/api/articles/1/comments")
+           .send({
+             username: "someoneShady",
+             body: "This is a test comment",
+           })
+           .expect(404)
+           .then((result) => {
+             expect(result.error.text).toEqual("Not Found");
+           });
+       });
+       test("Returns status code 404 if article does not exist", () => {
+         return request(server)
+           .post("/api/articles/0/comments")
+           .send({
+             username: "icellusedkars",
+             body: "This is a test comment",
+           })
+           .expect(404)
+           .then((result) => {
+             expect(result.error.text).toEqual("Not Found");
+           });
+       });
+       test("Returns status code 400 if article_id is in invalid format", () => {
+         return request(server)
+           .post("/api/articles/first/comments")
+           .send({
+             username: "icellusedkars",
+             body: "This is a test comment",
+           })
+           .expect(400)
+           .then((result) => {
+             expect(result.error.text).toEqual("Invalid request");
+           });
+       });
+       test("Returns status code 400 if injection is attempted via url", () => {
+         return request(server)
+           .post("/api/articles/1; DROP table articles;/comments")
+           .send({
+             username: "icellusedkars",
+             body: "This is a test comment",
+           })
+           .expect(400)
+           .then((result) => {
+             expect(result.error.text).toEqual("Invalid request");
+           });
+       });
+       test("Parametrises inputs to INSERT query", () => {
+         return request(server)
+           .post("/api/articles/1/comments")
+           .send({
+             username: "icellusedkars",
+             body: "('Smthn','icellusedkars',1); DROP TABLE comments;",
+           })
+           .expect(201)
+           .then((response) => {
+             const { comment } = response.body;
+             expect(comment).toMatchObject({
+               comment_id: expect.any(Number),
+               created_at: expect.stringMatching(
+                 /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\w$/
+               ),
+               body: "('Smthn','icellusedkars',1); DROP TABLE comments;",
+               article_id: 1,
+               votes: 0,
+               author: "icellusedkars",
+             });
+           });
+       });
+     });
+
      describe("PATCH /api/articles/:article_id", () => {
        test("Returns status code: 200 and correctly formatted body to a correct request", () => {
          return request(server)
