@@ -263,7 +263,7 @@ describe("server --> nc_news_test", () =>{
               });
             });
         });
-        test("Returns empty list when no articles are assciated with a topic that exists", () => {
+        test("Returns empty list when no articles are associated with a topic that exists", () => {
           return request(server)
             .get("/api/articles?topic=paper")
             .then(({ body }) => {
@@ -278,7 +278,7 @@ describe("server --> nc_news_test", () =>{
               expect(result.error.text).toEqual("Not Found");
             });
         });
-        test("Returns status code 404 if injection is attempted via sort_by query", () => {
+        test("Returns status code 404 if injection is attempted via topic query", () => {
           return request(server)
             .get("//api/articles?topic=mitch; DROP TABLE comments;")
             .expect(404)
@@ -301,6 +301,7 @@ describe("server --> nc_news_test", () =>{
           topic: expect.any(String),
           body: expect.any(String),
           votes: expect.any(Number),
+          comment_count: expect.any(Number),
           article_img_url: expect.any(String),
           created_at: expect.stringMatching(
             /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}\w$/
@@ -313,10 +314,20 @@ describe("server --> nc_news_test", () =>{
           .then(({ body }) => {
             const {article} = body
             expect(article).toBeInstanceOf(Object);
-            expect(Object.keys(article)).toHaveLength(8);
+            expect(Object.keys(article)).toHaveLength(9);
             expect(article).toMatchObject(expectedObject);
+            expect(article.comment_count).toBe(11);
           });
       });
+      test("Returns zero comment_count if there are no comments on the article", () => {
+        return request(server)
+          .get("/api/articles/2")
+          .then(({ body }) => {
+            const { article } = body;
+            expect(article.comment_count).toBe(0);
+          });
+      });
+
       test("Returns status code 404 if article_id does not exist in the DB", () => {
         return request(server)
           .get("/api/articles/0")
