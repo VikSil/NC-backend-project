@@ -48,17 +48,28 @@ const fetchArticles = (sort_by = "date", topic) => {
 
 
 const fetchArticleById = (article_id) => {
-  return connection.query(`SELECT * FROM articles WHERE article_id = $1`,[article_id])
-  .then(({ rows }) => {
+  return connection
+    .query(
+      `
+  SELECT a.*, COALESCE(count(c.comment_id)::int, 0) as comment_count 
+  FROM articles as a
+  LEFT JOIN comments as c 
+     ON a.article_id = c.article_id
+  WHERE a.article_id = $1
+  GROUP BY a.article_id
+  `,
+      [article_id]
+    )
+    .then(({ rows }) => {
       if (rows.length === 0) {
-                  return Promise.reject({
-                    status: 404,
-                    msg: "Not Found",
-                  });
+        return Promise.reject({
+          status: 404,
+          msg: "Not Found",
+        });
       } else {
         return rows[0];
       }
-  });
+    });
 };
 
 const updateVotes = (article_id, body) => {
