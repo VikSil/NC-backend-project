@@ -5,6 +5,6 @@ server.listen(PORT, (err) => {
   if (err) {
     console.log(`Probably should do something more sensible with this ${err}`);
   } else {
-    console.log(`The server is listening on port ${port}`);
+    console.log(`The server is listening on port ${PORT}`);
   }
 });
