@@ -18,6 +18,7 @@ const {
 const {
   getComments,
   postComments,
+  deleteCommentById,
 } = require("../controllers/comments.controller");
 
 const server = express();
@@ -32,6 +33,8 @@ server.get("/api/articles/:article_id/comments", getComments);
 server.post("/api/articles/:article_id/comments", postComments);
 
 server.patch("/api/articles/:article_id", patchVotes);
+
+server.delete("/api/comments/:comment_id", deleteCommentById);
 
 // assume that whatever endpoint was requested does not exist,
 // since it was not processed above

@@ -42,7 +42,7 @@ describe("server --> nc_news_test", () =>{
             const { endpoints } = body;
             expect(endpoints).toBeInstanceOf(Object);
             const allEndpoints = Object.keys(endpoints);
-            expect(allEndpoints.length).toBe(7);
+            expect(allEndpoints.length).toBe(8);
             allEndpoints.forEach((endpoint) => {
               expect(endpoints[endpoint]).toBeInstanceOf(Object);
               expect(Object.keys(endpoints[endpoint])).toHaveLength(4);
@@ -107,10 +107,11 @@ describe("server --> nc_news_test", () =>{
               }
             }
           }
-
-          const { body } = endpointResponse;
-          const expectedBody = endpoints[allEndpoints[i]].exampleResponse;
-          expect(Object.keys(body)).toEqual(Object.keys(expectedBody));
+          if (commandAndAddress[0] !== "DELETE"){
+            const { body } = endpointResponse;
+            const expectedBody = endpoints[allEndpoints[i]].exampleResponse;
+            expect(Object.keys(body)).toEqual(Object.keys(expectedBody));
+          }
         }
       }); 
     });
@@ -595,4 +596,39 @@ describe("server --> nc_news_test", () =>{
             });
         });
     });
+
+    describe("DELETE /api/comments/:comment_id", () => {
+       test("Returns status code: 204 and no content to a correct request", () => {
+         return request(server)
+           .delete("/api/comments/1")
+           .expect(204)
+           .then(({ body }) => {
+            expect(body).toEqual({});
+           });
+        });
+        test("Returns status code 404 if comment_id does not exist in the DB", () => {
+          return request(server)
+            .delete("/api/comments/0")
+            .expect(404)
+            .then((result) => {
+              expect(result.error.text).toEqual("Not Found");
+            });
+        });
+        test("Returns status code 400 if comment_id is in invalid format", () => {
+          return request(server)
+            .delete("/api/comments/first")
+            .expect(400)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid request");
+            });
+        });
+        test("Returns status code 400 if injection is attempted via url", () => {
+          return request(server)
+            .delete("/api/comments/1; DROP table articles;")
+            .expect(400)
+            .then((result) => {
+              expect(result.error.text).toEqual("Invalid request");
+            });
+        });
+      });
 });
