@@ -42,7 +42,7 @@ describe("server --> nc_news_test", () =>{
             const { endpoints } = body;
             expect(endpoints).toBeInstanceOf(Object);
             const allEndpoints = Object.keys(endpoints);
-            expect(allEndpoints.length).toBe(8);
+            expect(allEndpoints.length).toBe(9);
             allEndpoints.forEach((endpoint) => {
               expect(endpoints[endpoint]).toBeInstanceOf(Object);
               expect(Object.keys(endpoints[endpoint])).toHaveLength(4);
@@ -114,6 +114,30 @@ describe("server --> nc_news_test", () =>{
           }
         }
       }); 
+    });
+
+    describe("GET /api/users", () => {
+      test("Returns status code 200 to correct requests", () => {
+        return request(server)
+          .get("/api/users")
+          .expect(200)
+          .expect("Content-Type", /json/)
+          .then(({ body }) => {
+            expect(body.users).toBeInstanceOf(Array);
+            expect(body.users.length).toBe(4);
+            body.users.forEach((user) => {
+              expect(user).toBeInstanceOf(Object);
+              expect(Object.keys(user)).toHaveLength(3);
+              expect(typeof user.username).toBe("string");
+              expect(typeof user.name).toBe("string");
+              expect(typeof user.avatar_url).toBe("string");
+            });
+          });
+      });
+      // it's a non-parametrised SELECT ALL - it either finds something
+      // or there are no records (which is a legit response)
+      // the only error could be invoking the wrong endpoint
+      // which is tested for in a different describe block
     });
 
     describe("GET /api/topics", () =>{ 

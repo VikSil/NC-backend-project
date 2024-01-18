@@ -9,6 +9,7 @@ const express = require("express");
 const {
   getTopics,
   getEndpoints,
+  getUsers,
 } = require("../controllers/general.controller");
 
 const {
@@ -25,6 +26,7 @@ const server = express();
 server.use(express.json());// this will handle body for POST requests
 
 server.get("/api", getEndpoints);
+server.get("/api/users", getUsers);
 server.get("/api/topics", getTopics);
 server.get("/api/articles", getArticles);
 server.get("/api/articles/:article_id", getArticles);
