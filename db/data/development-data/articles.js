@@ -245,7 +245,7 @@ module.exports = [
     title: "Sweet potato & butternut squash soup with lemon & garlic toast",
     topic: "cooking",
     author: "weegembump",
-    body: "Roast your vegetables in honey before blitzing into this velvety smooth, spiced soup - served with garlicky, zesty ciabatta slices for dipping",
+    body: "Roast your vegetables before blitzing them into this velvety smooth, spiced soup - served with garlicky, zesty ciabatta slices for dipping",
     created_at: 1583961360000,
     votes: 0,
     article_img_url:
@@ -265,7 +265,7 @@ module.exports = [
     title: "Thanksgiving Drinks for Everyone",
     topic: "cooking",
     author: "grumpy19",
-    body: "Thanksgiving is a foodie’s favorite holiday. Mashed potatoes, cranberry sauce, stuffing, and last but not least, a juicy turkey. Don’t let your meticulous menu fall short of perfection; flavorful cocktails are just as important as the meal. Here are a few ideas that will fit right into your festivities.",
+    body: "Thanksgiving is all about the food for sure, but drinks are a component of any holiday and any celebration. If you are looking for the perfect fireside cocoa drink or cocktail or coffee to serve with your dessert, you are in the right place!",
     created_at: 1579908120000,
     votes: 0,
     article_img_url:
@@ -285,7 +285,7 @@ module.exports = [
     title: "A BRIEF HISTORY OF FOOD—NO BIG DEAL",
     topic: "cooking",
     author: "tickle122",
-    body: "n 1686, the croissant was invented in Austria. That's a fun fact I'd probably never had known or maybe don't even really need to know, but now I do, thanks to Julia Rothman's Food Anatomy: The Curious Parts & Pieces of Our Edible World. Rothman has an entire series of illustrated Anatomy books, including Nature and Farm, packed with infographics, quirky facts, and maps that you can get lost in for hours—in a fun way, not in a boring textbook way. It makes you wonder why textbooks aren't this fun to read. Can someone look into this? Thanks.",
+    body: "In 1686, the croissant was invented in Austria. Can someone look into this? Thanks.",
     created_at: 1578341520000,
     votes: 0,
     article_img_url:
@@ -293,10 +293,10 @@ module.exports = [
   },
   {
     title:
-      "Twice-Baked Butternut Squash Is the Thanksgiving Side Dish of Your Dreams",
+      "Sweet Potato Casserole Is the Thanksgiving Side Dish of Your Dreams",
     topic: "cooking",
     author: "jessjelly",
-    body: "What if, for once, your Thanksgiving sides were just as dazzling as the centerpiece turkey? Imagine a world where presenting a platter of seasonal vegetables inspires the same amount of cooing that the turkey does. Welcome to the world of twice-baked butternut squash. Sure, you could just roast some squash wedges and call it a day. But where's the fun in that? To make this year's most impressive vegetable side, Epi's food director Rhoda Boone gave super-seasonal butternut squash the twice-baked potatoes treatment: Mash the inside of the vegetable with butter, cream, and anything else that might make it more delicious, then pile it back into the vegetable, bake it until golden and velvety. The result is a jaw-dropping, brightly colored sweet-meet-savory butternut squash side dish. Here are just a few more reasons this creation belongs on this year's Thanksgiving table:",
+    body: "Every year, I hear from readers asking for Thanksgiving recipes - says Jeanine Donofrio, creator of Love & Lemons. Whatever your opinion on traditional sweet potato casserole, you have to try this recipe. The simple, creamy filling that really lets the sweet potatoes shine. Then, instead of covering it with a marshmallow topping, sprinkle it with a savory blend of chopped pecans, walnuts, and herbs. The toasty, nutty topping offers a delicious crunchy contrast to the velvety sweet potato mixture, and the cozy herbs make it perfect for fall.",
     created_at: 1578774000000,
     votes: 0,
     article_img_url:
@@ -306,17 +306,17 @@ module.exports = [
     title: "What to Cook This Week",
     topic: "cooking",
     author: "tickle122",
-    body: "Good morning. Here’s the plan for the week, not including breakfast because I’m on a farina kick and that’s not to everyone’s taste, and not including lunch because really when it comes to the midday hours you should get out of the office or the house and walk around. If you get something to eat, great, but the most important thing is to be outside where the stories are. There’s nothing happening at your desk but a screen. Anyway! I’m thinking chicken paprikash for dinner tonight, a nod toward the coming fall, served over buttery egg noodles, with green beans on the side. If you have the time, make an apple cake for dessert.",
+    body: "Good morning. Here’s the plan for the week, not including breakfast because I’m on a farina kick and that’s not to everyone’s taste, and not including lunch because really when it comes to the midday hours you should get out of the office or the house and walk around. If you get something to eat, great, but the most important thing is to be outside where the stories are. There’s nothing happening at your desk but a screen. Anyway! I’m thinking chickpea paprikash for dinner tonight, a nod toward the coming fall, served over wholegrain noodles, with green beans on the side. If you have the time, make an apple cake for dessert.",
     created_at: 1591672740000,
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/349609/pexels-photo-349609.jpeg?w=700&h=700",
   },
   {
-    title: "Halal food: Keeping pure and true",
+    title: "Vegan food: Keeping kind and simple",
     topic: "cooking",
     author: "grumpy19",
-    body: "CHINA’S cities abound with restaurants and food stalls catering to Muslims as well as to the many other Chinese who relish the distinctive cuisines for which the country’s Muslims are renowned. So popular are kebabs cooked by Muslim Uighurs on the streets of Beijing that the city banned outdoor grills in 2014 in order to reduce smoke, which officials said was exacerbating the capital’s notorious smog (the air today is hardly less noxious). Often such food is claimed to be qing zhen, meaning 'pure and true', or halal, prepared according to traditional Islamic regulations. But who can tell? Last year angry Muslims besieged a halal bakery in Xining, the capital of Qinghai province, after pork sausages were found in the shop’s delivery van. There have been several scandals in recent years involving rat meat or pork being sold as lamb. These have spread Muslim mistrust of domestically produced halal products.",
+    body: "Veganism can evoke many different reactions from many different people - says Jo Mann. Vegans are proud of the kindness they bring to a very cruel world. Ambivalent live-and-let-live type people, maybe flexitarians, easy going souls will likely be curious and supportive (the world needs more people like this too). Those who assume all vegans are preachy and holier than thou usually take to social media to quote tried and tested comedy greats like ’Plants Feel Pain’ and ’If we don't eat cows, they will take over the world’. Or the commonly used refrain, ’We’ve been eating meat since we were cavemen’. Cave people have been known to eat each other but we didn’t take that kind of gastronomy into the modern world with us!",
     created_at: 1592514480000,
     votes: 0,
     article_img_url:
@@ -326,7 +326,7 @@ module.exports = [
     title: "Seafood substitutions are increasing",
     topic: "cooking",
     author: "weegembump",
-    body: "'SEAFOOD fraud is a serious global problem', begins a recent report from Oceana, an NGO. Reviewing over 200 studies in 55 countries, the report finds that one in five fish sold has been mislabelled. Although fish fraud is common early in the supply chain, most of it comes at the retail level. In 65% of cases, the motivation is economic—slippery restaurateurs frequently serve up cheaper fish than they advertise to cut costs. In America, Oceana has reported instances of tilapia being sold as the more expensive red snapper. Especially brazen fish criminals have invented new types of fish entirely. In Brazil, researchers were puzzled to find markets selling 'douradinha', ' non-existent species. Close inspection found that 60% of such fish were actually 'vulture' catfish, a relatively undesirable dish. Reports in America of catfish being substituted for more expensive fish date back to at least 2002; Oceana’s study suggests that the phenomenon is spreading.",
+    body: "The GFI lists 86 producers of alternative fish products worldwide. And this number seems to be growing consistently. There is significant optimism, since the global plant-based seafood sector is predicted to expand by an average of 28 percent per year over the next decade. The increasing demand for seafood alternatives is likely driven by growing concerns over health, in addition to a rising awareness of environmental impact.",
     created_at: 1600277160000,
     votes: 0,
     article_img_url:
@@ -343,10 +343,35 @@ module.exports = [
       "https://images.pexels.com/photos/2403392/pexels-photo-2403392.jpeg?w=700&h=700",
   },
   {
-    title: "Stone Soup",
+    title: "Comfort Food",
     topic: "cooking",
     author: "cooljmessy",
-    body: "The first day I put my family on a Paleolithic diet, I made my kids fried eggs and sausage for breakfast. If they were still hungry, I told them, they could help themselves to more sausage, but they were not allowed to grab a slice of bread, or toast an English muffin, or pour themselves a bowl of cereal. This represented a reversal of the usual strictures, and they were happy to oblige. It was like some weird, unexpected holiday—Passover in July.",
+    body: `my wife makes celestial
+    French toasts. thick slices,
+    fried with frothy banana batter
+    (not stolen hen’s eggs)
+    
+    on the side, juicy cuts
+    of tempeh bacon. smoky flax meat
+    soaks up sticky drippy syrup
+    (precious porcupine back fat remains
+    with its intended owner)
+
+    two cups of coffee in two favourite mugs
+    mine, black. hers, sweetened
+    with pure white coconut cream
+    (no forced udder output here)
+
+    breakfast with her
+    is a prayer, a ritual
+    for eating
+
+    the way Nature intended:
+    from her body
+    (not theirs)
+    
+    ~poem by Linda Monahan~
+    `,
     created_at: 1590477900000,
     votes: 0,
     article_img_url:
@@ -356,7 +381,7 @@ module.exports = [
     title: "The vegan carnivore?",
     topic: "cooking",
     author: "tickle122",
-    body: "The chef Richard McGeown has faced bigger culinary challenges in his distinguished career than frying a meat patty in a little sunflower oil and butter. But this time the eyes and cameras of hundreds of journalists in the room were fixed on the 5oz (140g) pink disc sizzling in his pan, one that had been five years and €250,000 in the making. This was the world’s first proper portion of cultured meat, a beef burger created by Mark Post, professor of physiology, and his team at Maastricht University in the Netherlands. Post (which rhymes with ‘lost’, not ‘ghost’) has been working on in vitro meat (IVM) since 2009. On 5 August this year he presented his cultured beef burger to the world as a ‘proof of concept’. Having shown that the technology works, Post believes that in a decade or so we could see commercial production of meat that has been grown in a lab rather than reared and slaughtered. The comforting illusion that supermarket trays of plastic-wrapped steaks are not pieces of dead animal might become a discomforting reality.",
+    body: "The chef Richard McGeown has faced bigger culinary challenges in his distinguished career than frying a meat patty in a little sunflower oil. But this time the eyes and cameras of hundreds of journalists in the room were fixed on the 5oz (140g) pink disc sizzling in his pan, one that had been five years and €250,000 in the making. This was the world’s first proper portion of cultured meat, a beef burger created by Mark Post, professor of physiology, and his team at Maastricht University in the Netherlands. Post (which rhymes with ‘lost’, not ‘ghost’) has been working on in vitro meat (IVM) since 2009. On 5 August this year he presented his cultured beef burger to the world as a ‘proof of concept’. Having shown that the technology works, Post believes that in a decade or so we could see commercial production of meat that has been grown in a lab rather than reared and slaughtered.",
     created_at: 1583788860000,
     votes: 0,
     article_img_url:
