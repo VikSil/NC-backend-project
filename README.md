@@ -57,7 +57,7 @@ npm start
 This should yield an output: ``` The server is listening on port 9090``` and the console wil appear to be hanging (you can break the connection by sending Ctrl+C into the console when you need to).
 You can now use Insomnia, PostMan or other API development platform to make requests to the localhost on post 9090 to access development data. Send GET command to http://localhost:9090/api/ to retrieve the list of all available endpoints.
 
-![Example API request using Insomnia](https://imgur.com/CRpjUL6)
+<img src="https://i.imgur.com/CRpjUL6.png" alt="Example API request using Insomnia" width="600"/>
 
 You can also run test on the code using the test database. The test suite for this API was developed using [jest.js](https://jestjs.io/) package. In order to run the test suite type the following command into the terminal:
 ```
@@ -69,14 +69,11 @@ This command will run all the files in \_\_tests\_\_ folder and output the test 
 
 This diagram illustrates the exports --> require links between all packages.
 
-![Package diagram](https://imgur.com/HYtVsdI)
+<img src="https://i.imgur.com/HYtVsdI.png" alt="Package diagram" width="700"/>
 
 This ER diagram illustrates the database structure.
 
-![ER diagram](https://imgur.com/zIkHRIJ)
-
-
-
+<img src="https://i.imgur.com/zIkHRIJ.png" alt="ER diagram" />
 
 
 
