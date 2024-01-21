@@ -18,6 +18,20 @@ Please follow these steps to run the project locally:
     
     If both return a sensible looking version number, proceed to the next step. Otherwise, look into [these](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) instructions for setting up Node and npm.
 
+1. You will also need PostgreSQL installed and password configured. Run the following command in terminal to see if you have it:
+    ```
+    psql
+    ```
+    
+    If it returns something similar to this output: 
+    ```
+    psql (<version> (<operating system>))
+    Type "help" for help
+
+    <username>=#
+    ```
+    then you are all set. You can exit PostgreSQL engine by typing `\q` into the terminal and continue with the next step. Otherwise, download appropriate PostgreSQL distributable [here](https://www.postgresql.org/download/) and follow [these](https://www.postgresql.org/docs/current/libpq-pgpass.html) docs to set up .pgpass file. 
+
 1. Clone this repo onto your machine - follow [these](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) instructions, in case you are not familiar with cloning Git repos. All of the following steps assume that console commands are run from the root directory of the repo.
 
 1. At the root level create two files named: `.env.development` and `.env.test` These will contain environment variables necessary to connect to development and test databases respectively.
@@ -33,17 +47,14 @@ Please follow these steps to run the project locally:
     ```
     npm install
     ```
+
 1. Run the following command to create local databases;
     ```
-    npm setup-dbs
-    ```
-1. Run the following command to create local databases;
-    ```
-    npm setup-dbs
+    npm run setup-dbs
     ```
 1. Run the following command to seed the local development database.
     ```
-    npm seed
+    npm run seed
     ```
 
 After doing all of the above you should be all set to run the code, test it and play with the functionality locally.
@@ -52,7 +63,7 @@ After doing all of the above you should be all set to run the code, test it and 
 
 To start up the API server, run the following command:
 ```
-npm start
+npm run start
 ```
 This should yield an output: ``` The server is listening on port 9090``` and the console wil appear to be hanging (you can break the connection by sending Ctrl+C into the console when you need to).
 You can now use Insomnia, PostMan or other API development platform to make requests to the localhost on post 9090 to access development data. Send GET command to http://localhost:9090/api/ to retrieve the list of all available endpoints.
