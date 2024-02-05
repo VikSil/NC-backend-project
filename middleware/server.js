@@ -6,6 +6,8 @@ and error handling
 */
 
 const express = require("express");
+const cors = require("cors");
+
 const {
   getTopics,
   getEndpoints,
@@ -23,6 +25,8 @@ const {
 } = require("../controllers/comments.controller");
 
 const server = express();
+server.use(cors());
+
 server.use(express.json());// this will handle body for POST requests
 
 server.get("/api", getEndpoints);
