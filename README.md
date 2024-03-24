@@ -84,7 +84,7 @@ This diagram illustrates the exports --> require links between all packages.
 
 This ER diagram illustrates the database structure.
 
-<img src="https://i.imgur.com/JyNk8QY.png" alt="ER diagram" />
+<img src="https://i.imgur.com/cUPvhcb.png" alt="ER diagram" />
 
 
 
