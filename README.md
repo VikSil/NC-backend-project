@@ -5,7 +5,6 @@ This repository was created during the [software development bootcamp by NorthCo
 
 <p align="center"><img src="https://raw.githubusercontent.com/VikSil/NC-news-backend-API/main/assets/img/GIF_demo.gif" /></p>
 
-You can access the hosted version on Render [here](https://nc-news-api-n397.onrender.com/api). The link will return a .json file with all endpoints available on this API. It will take a minute for the web app to spin up and wake the API from its slumber, please be patient. There is a limit of two concurrent connections, it is possible (albeit unlikely) that a couple of other people are already connected, if your connection is being refused. Please try again later. Alternatively, you may want to download this repo and run the API locally.
 
 
 ## Setup instructions
@@ -70,7 +69,7 @@ npm run start
 This should yield an output: ``` The server is listening on port 9090``` and the console wil appear to be hanging (you can break the connection by sending Ctrl+C into the console when you need to).
 You can now use Insomnia, PostMan or other API development platform to make requests to the localhost on post 9090 to access development data. Send GET command to http://localhost:9090/api/ to retrieve the list of all available endpoints.
 
-<img src="https://raw.githubusercontent.com/VikSil/NC-news-backend-API/main/assets/img/Insomnia.png" alt="Example API request using Insomnia" width="600"/>
+<p align="center"><img src="https://raw.githubusercontent.com/VikSil/NC-news-backend-API/main/assets/img/Insomnia.png" alt="Example API request using Insomnia" width="600"/></p>
 
 You can also run test on the code using the test database. The test suite for this API was developed using [jest.js](https://jestjs.io/) package. In order to run the test suite type the following command into the terminal:
 ```
@@ -82,11 +81,11 @@ This command will run all the files in \_\_tests\_\_ folder and output the test 
 
 This diagram illustrates the exports --> require links between all packages.
 
-<img src="https://raw.githubusercontent.com/VikSil/NC-news-backend-API/main/assets/img/component_diagram.png" alt="Package diagram" width="700"/>
+<p align="center"><img src="https://raw.githubusercontent.com/VikSil/NC-news-backend-API/main/assets/img/component_diagram.png" alt="Package diagram" width="700"/></p>
 
 This ER diagram illustrates the database structure.
 
-<img src="https://raw.githubusercontent.com/VikSil/NC-news-backend-API/main/assets/img/ER_diagram.png" alt="ER diagram" />
+<p align="center"><img src="https://raw.githubusercontent.com/VikSil/NC-news-backend-API/main/assets/img/ER_diagram.png" alt="ER diagram" /></p>
 
 
 
