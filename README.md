@@ -18,7 +18,7 @@ Please follow these steps to run the project locally:
     npm --version
     ```
     
-    If both return a sensible looking version number, proceed to the next step. Otherwise, look into [these](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) instructions for setting up Node and npm.
+    If both return a sensible looking version number, proceed to the next step. Otherwise, look into [these](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) instructions for setting up Node.js and npm.
 
 1. You will also need PostgreSQL installed and password configured. Run the following command in terminal to see if you have it:
     ```
